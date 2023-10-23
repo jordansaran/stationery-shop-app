@@ -3,51 +3,55 @@
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
-import {Seller} from "@/interfaces/interfaces";
-import useQuerySeller from "@/hooks/seller/hook";
 import {useEffect, useState} from 'react';
+import {useSaleContext} from "@/context/SalesContext";
+import { Seller } from '@/interfaces/interfaces';
 
-export default function AutoCompleteSellers() {
+
+
+export default function AutoCompleteSellers(sellerName?: string) {
+  const [sellerEdit, setSellerEdit] = useState<Seller | null>(null)
+  const {
+    sellers,
+    setSellers,
+    isLoading,
+    isError
+  } = useSaleContext()
   const [open, setOpen] = useState(false);
-  const [options, setOptions] = useState<Seller[]>([])
-  const [seller, setSeller] = useState<Seller | null>(null)
-  const { data, isLoading, isError } = useQuerySeller()
+
+  const getSeller = (sellerName: string | null) => {
+    const sellerEdit = sellers.find((seller) => seller.name === sellerName)
+    return sellerEdit !== undefined ? sellerEdit : null
+  }
 
   useEffect(() => {
-      !isLoading && !isError ? setOptions(data != null ? data : []) : null
-      // !isLoading && !isError && params ? options.find(seller => seller.id === params.sellerNumber) : null
-    }, [data, isError, isLoading, open]);
+    setSellerEdit(getSeller(sellerName !== undefined ? sellerName : null))
+  }, []);
 
   return (
     <Autocomplete
       id="asyncSellers"
       open={open}
-      onOpen={() => {
-        setOpen(true);
-      }}
-      onClose={() => {
-        setOpen(false);
-      }}
+      onOpen={() => {setOpen(true)}}
+      onClose={() => {setOpen(false)}}
       isOptionEqualToValue={(option, value) => option.id === value.id}
       getOptionLabel={(option) => option.name}
-      options={options}
+      options={sellers}
       loading={isLoading}
-      onChange={(event, value) => {
-          // let editSeller = !isLoading && !isError ? options.find((option) => option.id === params.sellerNumber) : value
-          setSeller(value);
-      }}
+      value={sellerName !== null ? sellerEdit : null}
+      onChange={(event, value) => { // @ts-ignore
+        setSellers(value)}}
       renderInput={(params) => (
         <TextField
           {...params}
-          // label="Lista de vendedores"
           required
           placeholder={"Selecione o nome"}
           InputProps={{
             ...params.InputProps,
             endAdornment: (
               <>
-                  {!isLoading && isError ? <label>Error</label> : isLoading && !isError ? <CircularProgress color="inherit" size={20} /> : null}
-                  {params.InputProps.endAdornment}
+                {!isLoading && isError ? <label>Error</label> : isLoading && !isError ? <CircularProgress color="inherit" size={20} /> : null}
+                {params.InputProps.endAdornment}
               </>
             ),
           }}

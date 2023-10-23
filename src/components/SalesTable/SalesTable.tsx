@@ -1,4 +1,4 @@
-import {Alert, Grid, Snackbar, TableFooter} from "@mui/material";
+import {Grid, TableFooter} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import TableContainer from "@mui/material/TableContainer";
@@ -8,7 +8,6 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
 import {useState} from "react";
-import {useSaleContext} from "@/context/SalesContext";
 import {Sale} from "@/interfaces/interfaces";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
@@ -16,6 +15,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Collapse from "@mui/material/Collapse";
 import Box from "@mui/material/Box";
 import Link from "next/link";
+import {useSaleContext} from "@/context/SalesContext";
 
 function Row(props: { row: Sale }) {
   const options = { style: 'currency', currency: 'BRL' }
@@ -160,7 +160,7 @@ export default function SalesTable() {
 						  xs={6}>
 						  <Grid container justifyContent={"flex-end"}>
 						      <Grid item xs={12}>
-						          <Button href={"/sale/create/"} size={"large"} color={"primary"} variant={"contained"}>
+						          <Button href={"/sales/create/"} size={"large"} color={"primary"} variant={"contained"}>
 							          Nova venda
 								  </Button>
 						      </Grid>

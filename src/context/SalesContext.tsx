@@ -1,11 +1,21 @@
+"use client"
+
 import {createContext, ReactNode, SyntheticEvent, useContext, useEffect, useState} from "react";
-import {Cart, ContextProps, Product, Sale, ShoppingCart} from "@/interfaces/interfaces"
+import {Cart, Client, ContextProps, Product, Sale, Seller, ShoppingCart} from "@/interfaces/interfaces"
 
 export const SaleContext = createContext<ContextProps> ({
 	openAlert: false,
 	setOpenAlert: (): boolean => false,
+	isLoading: false,
+	setIsLoading: (): boolean => false,
+	isError: false,
+	setIsError: (): boolean => false,
 	menu: "Vendas",
 	setMenu: (): string => "Vendas",
+	sellers: [],
+	setSellers: (): Seller[] => [],
+	customers: [],
+	setCustomers: (): Client[] => [],
 	sales: [],
 	setSales: (): Sale[] => [],
 	cart: [],
@@ -21,22 +31,64 @@ export const SaleProvider = ({children}: { children: ReactNode }) => {
 	const [openAlert, setOpenAlert] = useState(false);
 	const [menu, setMenu] = useState<string>("Vendas");
   const [sales, setSales] = useState<Sale[]>([]);
+	const [sellers, setSellers] = useState<Seller[]>([]);
+	const [customers, setCustomers] = useState<Client[]>([]);
 	const [cart, setCart] = useState<ShoppingCart[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [total, setTotal] = useState<number> (0.00);
-	const  getReportSales = async () => {
+	const [isLoading, setIsLoading] = useState<boolean>(false)
+	const [isError, setIsError] = useState<boolean>(false)
+
+	const  getAllSales = async () => {
     let url = process.env.API_URL + "/sale/report/"
-    const response = await fetch(url)
+    return await fetch(url)
 	    .then((response) => response.json())
       .then((response) => {
-				let reportSales: Sale[] = response['results']
-	      setSales(reportSales)
+				let listAllSales: Sale[] = response['results']
+	      setSales(listAllSales)
+	      return true
       })
-    .catch((error) => console.log(error))
+    .catch((error) => {
+				console.log(error)
+	      return false
+    })
 	}
 
+	const getAllCustomers = async  () => {
+    let url = process.env.API_URL + "/client/"
+    return await fetch(url)
+    .then((response) => response.json())
+    .then((response) => {
+        let listAllClient: Client[] = response['results']
+        setCustomers(listAllClient)
+	    return true
+    })
+    .catch((error) => {
+				console.log(error)
+	    return false
+    } )
+}
+
+	const getAllSellers = async () => {
+    let url = process.env.API_URL + "/seller/"
+    return await fetch(url)
+    .then((response) => response.json())
+    .then((response) => {
+        let listAllSellers: Seller[] = response['results']
+        setSellers(listAllSellers)
+	      return false
+    })
+    .catch((error) => {
+			console.log(error)
+	    return false
+    } )
+}
+
   useEffect(() => {
-		getReportSales()
+		const responseSales = getAllSales()
+	  const responseSellers = getAllSellers()
+	  const responseCustomers = getAllCustomers()
+	  console.log(responseCustomers, responseSales, responseSellers)
   }, [])
 
   return (
@@ -54,7 +106,15 @@ export const SaleProvider = ({children}: { children: ReactNode }) => {
 				menu,
 				setMenu,
 				openAlert,
-				setOpenAlert
+				setOpenAlert,
+				sellers,
+				setSellers,
+				customers,
+				setCustomers,
+				isError,
+				setIsError,
+				isLoading,
+				setIsLoading
 			}}>
 			{children}
 		</SaleContext.Provider>
@@ -74,24 +134,14 @@ export const useSaleContext = () => {
 		menu,
 		setMenu,
 		openAlert,
-		setOpenAlert
+		setOpenAlert,
+		sellers,
+		setSellers,
+		customers,
+		setCustomers,
+		isLoading,
+		isError
 	} = useContext(SaleContext);
-
-	function parserShoppingCart(cart: Cart) {
-		let shoppingCart: ShoppingCart[] = []
-		cart.items.forEach((item) => {
-			let itemToShoppingCart = {
-			  id: item.id,
-			  label: item.productName,
-			  quantity: item.quantity,
-			  price: item.unitaryPriceCommission,
-			  total: item.totalProduct
-			}
-			shoppingCart.push(itemToShoppingCart)
-		})
-		setCart(shoppingCart)
-		setTotal(cart.totalSale)
-	}
 
 	const handleClose = (event: SyntheticEvent | Event, reason?: string) => {
 		if (reason === 'clickaway') return;
@@ -130,6 +180,12 @@ export const useSaleContext = () => {
 		menu,
 		setMenu,
 		openAlert,
-		setOpenAlert
+		setOpenAlert,
+		sellers,
+		setSellers,
+		customers,
+		setCustomers,
+		isError,
+		isLoading
 	}
 }

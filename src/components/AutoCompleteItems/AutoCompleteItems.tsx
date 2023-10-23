@@ -4,24 +4,30 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
 import {Product} from "@/interfaces/interfaces";
-import useQueryItems from "@/hooks/item/hook";
-import {Alert, Grid, Snackbar} from "@mui/material";
+import {Grid} from "@mui/material";
 import Button from "@mui/material/Button";
-import {useSaleContext} from "@/context/SalesContext";
-import {SyntheticEvent, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import Typography from "@mui/material/Typography";
+import { useSaleContext } from '@/context/SalesContext';
+import hook from '@/hooks/items/hook';
 
 
 export default function AutoCompleteItems() {
 
-	const { addItem, products, setProducts, openAlert, setOpenAlert, handleClose } = useSaleContext();
+	const {
+		addItem,
+		products,
+		setProducts,
+		setOpenAlert,
+	} = useSaleContext();
 	const [open, setOpen] = useState(false);
 	const [product, setProduct] = useState<Product | null>(null)
 	const [quantity, setQuantity] = useState<number>(0)
-	const { data, isLoading, isError } = useQueryItems()
+	const { data, isLoading, isError } = hook()
   useEffect(() => {
-      !isLoading && !isError ? setProducts(data != null ? data : [] ) : null
-    }, [data, isError, isLoading, open]);
+		// @ts-ignore
+	  !isLoading && !isError ? setProducts(data) : null
+  }, [data, isError, isLoading, open]);
 
   let parserItem = () => {
 	  if (product !== null) {
@@ -29,85 +35,80 @@ export default function AutoCompleteItems() {
 		  if (quantity > 0) {
 			let totalItem = product.value * quantity;
 		    let itemToCart = {
-			  id: product.id,
-			  label: product.product,
-			  quantity: quantity,
-			  price: product.value,
-			  total: totalItem
+			    id: product.id,
+			    label: product.product,
+			    quantity: quantity,
+			    price: product.value,
+			    total: totalItem
 		    }
-		    setQuantity(1)
+		    setQuantity(0)
 		    let hasItem = addItem(itemToCart)
 		    if (!hasItem) setOpenAlert(true);
 		  }
-
 	  }
 	}
 
   return (
-      <>
-          <Grid container spacing={1}>
-			<Grid item xs={7}>
-				<Grid container direction={"column"}>
-					<Grid item>
-						<Typography variant={"inherit"}>
-							Buscar pelo código de barras ou descrição
-						</Typography>
-					</Grid>
-					<Grid item>
-						<Autocomplete
-		                  id="asyncProducts"
-		                  open={open}
-		                  onOpen={() => {
-		                    setOpen(true);
-		                  }}
-		                  onClose={() => {
-		                    setOpen(false);
-		                  }}
-		                  isOptionEqualToValue={(product, value) => product.id === value.id}
-		                  getOptionLabel={(product) => product.product}
-		                  options={products}
-		                  loading={isLoading}
-		                  onChange={(event, value) => setProduct(value)}
-		                  renderInput={(params) => (
-		                    <TextField
-		                      {...params}
-		                      required
-		                      placeholder={"Digite o código ou nome do produto"}
-		                      InputProps={{
-		                        ...params.InputProps,
-		                        endAdornment: (
-		                          <>
-		                              {!isLoading && isError ? <label>Error</label> : isLoading && !isError ? <CircularProgress color="inherit" size={20} /> : null}
-		                              {params.InputProps.endAdornment}
-		                          </>
-		                        ),
-		                      }}
-		                    />
-		                  )}
-		                />
-					</Grid>
+		<>
+			<Grid container spacing={1}>
+				<Grid item xs={7}>
+					<Grid container direction={"column"}>
+						<Grid item>
+								<Typography variant={"inherit"}>
+									Buscar pelo código de barras ou descrição
+								</Typography>
+						</Grid>
+						<Grid item>
+							<Autocomplete
+								id="asyncProducts"
+								open={open}
+								onOpen={() => {setOpen(true)}}
+								onClose={() => {setOpen(false)}}
+								isOptionEqualToValue={(product, value) => product.id === value.id}
+								getOptionLabel={(product) => product.product}
+								options={products}
+								loading={isLoading}
+								onChange={(event, value) => setProduct(value)}
+								renderInput={(params) => (
+									<TextField
+										{...params}
+										required
+										placeholder={"Digite o código ou nome do produto"}
+										InputProps={{
+											...params.InputProps,
+											endAdornment: (
+												<>
+													{!isLoading && isError ? <label>Error</label> : isLoading && !isError ? <CircularProgress color="inherit" size={20} /> : null}
+													{params.InputProps.endAdornment}
+												</>
+											),
+										}}
+									/>
+								)}
+							/>
+						</Grid>
 				</Grid>
 			</Grid>
-			<Grid item xs={3}>
-				<Grid container direction={"column"}>
-					<Grid item>
-						<Typography variant={"inherit"}>
-							Quantidade de itens
-						</Typography>
-					</Grid>
-					<Grid item>
-						<TextField
-				            id="outlined-number"
-				            type="number"
-	                        value={quantity}
-				            onChange={(e) => setQuantity(Number(e.target.value))}
-				            InputProps={{inputProps: { min: 0 }}}
-				            InputLabelProps={{shrink: true}}
-						/>
+				<Grid item xs={3}>
+					<Grid container direction={"column"}>
+						<Grid item>
+							<Typography variant={"inherit"}>
+								Quantidade de itens
+							</Typography>
+						</Grid>
+						<Grid item>
+							<TextField
+								id="outlined-number"
+								type="number"
+								value={quantity}
+								onChange={(e) => setQuantity(Number(e.target.value))}
+								InputProps={{inputProps: { min: 0 }}}
+								InputLabelProps={{shrink: true}}
+							/>
+						</Grid>
 					</Grid>
 				</Grid>
-			</Grid>
-			<Grid item xs={2}>
+				<Grid item xs={2}>
 				<Grid container direction={"column"}>
 					<Grid item>
 						<Typography>
@@ -122,6 +123,6 @@ export default function AutoCompleteItems() {
 				</Grid>
 			</Grid>
 		  </Grid>
-      </>
+		</>
   );
 }

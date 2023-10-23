@@ -3,13 +3,13 @@
 import Typography from "@mui/material/Typography";
 import {Grid, TextField} from "@mui/material";
 import Button from "@mui/material/Button";
-import {useSaleContext} from "@/context/SalesContext";
 import AutoCompleteCustomers from "@/components/AutoCompleteCustomers/AutoCompleteCustomers";
 import AutoCompleteSellers from "@/components/AutoCompleteSellers/AutoCompleteSellers";
+import { useSaleContext } from "@/context/SalesContext";
+import {currency} from "@/interfaces/interfaces";
 
 export default function DataSale() {
-	const options = { style: 'currency', currency: 'BRL' }
-	const { total} = useSaleContext()
+	const { total } = useSaleContext()
 
 	return (
 		<>
@@ -57,7 +57,7 @@ export default function DataSale() {
 						</Grid>
 						<Grid item xs={2}>
 							<Typography variant={"h5"} fontWeight={"bold"}>
-								{Number(total).toLocaleString('pt-Br', options)}
+								{Number(total).toLocaleString('pt-Br', currency)}
 							</Typography>
 						</Grid>
 					</Grid>
@@ -71,7 +71,7 @@ export default function DataSale() {
 							</Button>
 						</Grid>
 						<Grid item xs={2}>
-							<Button variant={"contained"} color={"primary"} disabled size={"large"}>
+							<Button variant={"contained"} color={"primary"} size={"large"}>
 								Finalizar
 							</Button>
 						</Grid>

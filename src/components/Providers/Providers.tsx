@@ -4,14 +4,14 @@ import ThemeRegistry from "@/components/ThemeRegistry/ThemeRegistry";
 import SalesBar from "@/components/SalesBar/SalesBar";
 import {Grid} from "@mui/material";
 import {ReactNode} from "react";
-import ReactQueryProvider from "@/providers/QueryReactProvider";
+import QueryProvider from "@/providers/QueryProvider";
 import {SaleProvider} from "@/context/SalesContext";
 
 export default function Providers({children,}: { children: ReactNode }) {
 	return (
 		<>
-			<ReactQueryProvider>
-			    <ThemeRegistry>
+			<QueryProvider>
+				<ThemeRegistry>
 					<body>
 						<SaleProvider>
 							<SalesBar/>
@@ -20,8 +20,8 @@ export default function Providers({children,}: { children: ReactNode }) {
 							</Grid>
 						</SaleProvider>
 					</body>
-			    </ThemeRegistry>
-			</ReactQueryProvider>
+				</ThemeRegistry>
+			</QueryProvider>
 		</>
 	)
 }

@@ -1,5 +1,6 @@
-import {Dispatch, SetStateAction, useState} from "react";
+import {Dispatch, SetStateAction} from "react";
 
+export const currency = { style: 'currency', currency: 'BRL' }
 export interface Item {
 	id: number;
 	productId: number;
@@ -61,8 +62,16 @@ export interface ShoppingCart {
 }
 
 export interface ContextProps {
+	sellers: Seller[],
+	setSellers: Dispatch<SetStateAction<Seller[]>>,
+	customers: Client[],
+	setCustomers: Dispatch<SetStateAction<Client[]>>,
 	openAlert: boolean,
 	setOpenAlert: Dispatch<SetStateAction<boolean>>,
+	isLoading: boolean,
+	setIsLoading: Dispatch<SetStateAction<boolean>>,
+	isError: boolean,
+	setIsError: Dispatch<SetStateAction<boolean>>,
 	menu: string,
 	setMenu: Dispatch<SetStateAction<string>>,
 	sales: Sale[],
@@ -73,4 +82,9 @@ export interface ContextProps {
 	setProducts: Dispatch<SetStateAction<Product[]>>,
 	total: number,
 	setTotal: Dispatch<SetStateAction<number>>,
+}
+
+export interface UseQueryData {
+	queryKey: any[],
+	queryFn: any
 }
