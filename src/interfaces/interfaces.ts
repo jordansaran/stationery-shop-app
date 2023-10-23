@@ -1,6 +1,14 @@
 import {Dispatch, SetStateAction} from "react";
 
 export const currency = { style: 'currency', currency: 'BRL' }
+export const DateFormat = {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+				hour: "numeric",
+				minute: "numeric"
+    };
+
 export interface Item {
 	id: number;
 	productId: number;
@@ -62,6 +70,12 @@ export interface ShoppingCart {
 }
 
 export interface ContextProps {
+	dateSale: string,
+	setDateSale: Dispatch<SetStateAction<string>>,
+	seller: Seller | null,
+	setSeller: Dispatch<SetStateAction<Seller>>,
+	client: Client | null,
+	setClient: Dispatch<SetStateAction<Client>>,
 	sellers: Seller[],
 	setSellers: Dispatch<SetStateAction<Seller[]>>,
 	customers: Client[],

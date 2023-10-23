@@ -4,42 +4,11 @@ import {TableContainer, TableHead, TableRow, TableBody, Table, TableCell } from 
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from '@mui/icons-material/Delete';
 import Typography from "@mui/material/Typography";
-import {Cart, currency} from "@/interfaces/interfaces";
+import {currency} from "@/interfaces/interfaces";
 import {useSaleContext} from "@/context/SalesContext";
-import { useEffect } from "react";
-import {ShoppingCart} from "@/interfaces/interfaces"
 
-function parserShoppingCart(cart: Cart) {
-	let shoppingCart: ShoppingCart[] = []
-	cart.items.forEach((item) => {
-		let itemToShoppingCart = {
-		  id: item.id,
-		  label: item.productName,
-		  quantity: item.quantity,
-		  price: item.unitaryPriceCommission,
-		  total: item.totalProduct
-		}
-		shoppingCart.push(itemToShoppingCart)
-	})
-	return shoppingCart
-}
-
-export default function ShoppingCart({invoice = null} : {invoice?: number | null}) {
-	const {
-		sales,
-		cart,
-		setCart,
-		setTotal,
-		removeItem
-	} = useSaleContext()
-	const sale = sales.find((sale) => sale.invoice == invoice ? sale : null)
-	useEffect(() => {
-		if (sale !== undefined) {
-			const shoppingCart = parserShoppingCart(sale?.cart)
-			setCart(shoppingCart)
-			setTotal(sale.totalSale)
-		}
-	}, [sales]);
+export default function ShoppingCart() {
+	const { cart, removeItem } = useSaleContext()
 
 	return (
 		<>

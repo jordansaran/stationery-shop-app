@@ -11,7 +11,8 @@ export default function AutoCompleteCustomers() {
     customers,
     setCustomers,
     isLoading,
-    isError
+    isError,
+    client
   } = useSaleContext()
   const [open, setOpen] = useState(false);
 
@@ -26,7 +27,11 @@ export default function AutoCompleteCustomers() {
       getOptionLabel={(option) => option.name}
       options={customers}
       loading={isLoading}
-      onChange={(event, value) => setCustomers(value)}
+      value={client}
+      onChange={(event, value) => {
+        // @ts-ignore
+        setCustomers(value)
+      }}
       renderInput={(params) => (
         <>
           <TextField

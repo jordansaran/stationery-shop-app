@@ -3,30 +3,18 @@
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import {useSaleContext} from "@/context/SalesContext";
-import { Seller } from '@/interfaces/interfaces';
 
-
-
-export default function AutoCompleteSellers(sellerName?: string) {
-  const [sellerEdit, setSellerEdit] = useState<Seller | null>(null)
+export default function AutoCompleteSellers() {
   const {
     sellers,
     setSellers,
     isLoading,
-    isError
+    isError,
+    seller
   } = useSaleContext()
   const [open, setOpen] = useState(false);
-
-  const getSeller = (sellerName: string | null) => {
-    const sellerEdit = sellers.find((seller) => seller.name === sellerName)
-    return sellerEdit !== undefined ? sellerEdit : null
-  }
-
-  useEffect(() => {
-    setSellerEdit(getSeller(sellerName !== undefined ? sellerName : null))
-  }, []);
 
   return (
     <Autocomplete
@@ -38,7 +26,7 @@ export default function AutoCompleteSellers(sellerName?: string) {
       getOptionLabel={(option) => option.name}
       options={sellers}
       loading={isLoading}
-      value={sellerName !== null ? sellerEdit : null}
+      value={seller}
       onChange={(event, value) => { // @ts-ignore
         setSellers(value)}}
       renderInput={(params) => (

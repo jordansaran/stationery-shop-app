@@ -4,6 +4,12 @@ import {createContext, ReactNode, SyntheticEvent, useContext, useEffect, useStat
 import {Cart, Client, ContextProps, Product, Sale, Seller, ShoppingCart} from "@/interfaces/interfaces"
 
 export const SaleContext = createContext<ContextProps> ({
+	dateSale: "",
+	setDateSale: (): string => "",
+	seller: null,
+	setSeller: (): Seller | null  => null,
+	client: null,
+	setClient: (): Client | null => null,
 	openAlert: false,
 	setOpenAlert: (): boolean => false,
 	isLoading: false,
@@ -38,6 +44,9 @@ export const SaleProvider = ({children}: { children: ReactNode }) => {
   const [total, setTotal] = useState<number> (0.00);
 	const [isLoading, setIsLoading] = useState<boolean>(false)
 	const [isError, setIsError] = useState<boolean>(false)
+	const [seller, setSeller] = useState<Seller>({id: 0, name: ""})
+	const [client, setClient] = useState<Client>({id: 0, name: ""})
+	const [dateSale, setDateSale] = useState<string>("")
 
 	const  getAllSales = async () => {
     let url = process.env.API_URL + "/sale/report/"
@@ -114,7 +123,13 @@ export const SaleProvider = ({children}: { children: ReactNode }) => {
 				isError,
 				setIsError,
 				isLoading,
-				setIsLoading
+				setIsLoading,
+				client,
+				setClient,
+				seller,
+				setSeller,
+				dateSale,
+				setDateSale
 			}}>
 			{children}
 		</SaleContext.Provider>
@@ -140,7 +155,13 @@ export const useSaleContext = () => {
 		customers,
 		setCustomers,
 		isLoading,
-		isError
+		isError,
+		seller,
+		setSeller,
+		client,
+		setClient,
+		dateSale,
+		setDateSale
 	} = useContext(SaleContext);
 
 	const handleClose = (event: SyntheticEvent | Event, reason?: string) => {
@@ -162,7 +183,7 @@ export const useSaleContext = () => {
 	function removeItem(item: ShoppingCart) {
 		setCart(oldCart => oldCart.filter(itemCart => itemCart.id !== item.id));
 		let subTotal: number = total - item.total
-		setTotal(subTotal)
+		subTotal < 0 ? setTotal(0) : setTotal(subTotal)
 	}
 
 	return {
@@ -186,6 +207,12 @@ export const useSaleContext = () => {
 		customers,
 		setCustomers,
 		isError,
-		isLoading
+		isLoading,
+		seller,
+		setSeller,
+		client,
+		setClient,
+		dateSale,
+		setDateSale
 	}
 }
