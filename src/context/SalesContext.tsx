@@ -97,7 +97,6 @@ export const SaleProvider = ({children}: { children: ReactNode }) => {
 		const responseSales = getAllSales()
 	  const responseSellers = getAllSellers()
 	  const responseCustomers = getAllCustomers()
-	  console.log(responseCustomers, responseSales, responseSellers)
   }, [])
 
   return (
@@ -164,11 +163,6 @@ export const useSaleContext = () => {
 		setDateSale
 	} = useContext(SaleContext);
 
-	const handleClose = (event: SyntheticEvent | Event, reason?: string) => {
-		if (reason === 'clickaway') return;
-		setOpenAlert(false);
-	};
-
 	function addItem(item: ShoppingCart) {
 		const hasItem = cart.some(itemCart => itemCart.id === item.id);
 		if(!hasItem) {
@@ -191,7 +185,6 @@ export const useSaleContext = () => {
 		setCart,
 		addItem,
 		removeItem,
-		handleClose,
 		total,
 		setTotal,
 		setProducts,

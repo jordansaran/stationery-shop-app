@@ -10,10 +10,12 @@ import SearchIcon from '@mui/icons-material/Search';
 import {useEffect, useState} from "react";
 import Typography from "@mui/material/Typography";
 import queryListCommissions from "@/hooks/commission/hook";
+import {useSaleContext} from "@/context/SalesContext";
 
 
 export default function TableData() {
 
+    const { setMenu } = useSaleContext()
     const [listCommissions, setListCommissions] = useState<Commission[]>([])
     const dateStartToString = new Date().toLocaleDateString('pt-br')
     const dateEndPlus = new Date()
@@ -28,6 +30,7 @@ export default function TableData() {
     useEffect(() => {
         // @ts-ignore
       !isLoading && !isError ? setListCommissions(data) : null
+      setMenu("Comissões")
     }, [data, isLoading, isError, listCommissions]);
 
 

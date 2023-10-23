@@ -77,7 +77,7 @@ export default function DataSale() {
 							</Button>
 						</Grid>
 						<Grid item xs={2}>
-							<Button variant={"contained"} color={"primary"} size={"large"} disabled={buttonFinish}>
+							<Button variant={"contained"} color={"success"} size={"large"} disabled={buttonFinish}>
 								Finalizar
 							</Button>
 						</Grid>

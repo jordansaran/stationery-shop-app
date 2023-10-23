@@ -19,7 +19,8 @@ const theme = createTheme({
   palette: {
     mode: 'light',
     primary: createColor("#00585E"),
-    warning: createColor("#BE0000")
+    warning: createColor("#BE0000"),
+    success: createColor("#2B7D83")
   },
   // @ts-ignore
   ptBR,

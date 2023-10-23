@@ -83,7 +83,7 @@ export default function SalesBar() {
 	    </Box>
     );
 
-	const {menu} = useSaleContext()
+	const {menu, setMenu} = useSaleContext()
 
   return (
 		<>
@@ -97,7 +97,7 @@ export default function SalesBar() {
 								</IconButton>
 							</Grid>
 				      <Grid item justifyItems={"center"} justifyContent={"center"} xs={6}>
-					      <Link href={"/"}>
+					      <Link href={"/"} onClick={() => setMenu('Vendas')}>
 						      <Typography variant="h4" color={"primary"} fontWeight={"bold"}>
 							      {menu}
 									</Typography>

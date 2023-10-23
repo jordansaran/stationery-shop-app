@@ -24,7 +24,7 @@ function parserShoppingCart(cart: Cart) {
 	return shoppingCart
 }
 
-export function Sale({ params }: { params?: { invoice?: number } }) {
+export function Sale({ params }: { params?: { invoice?: number, menu?: string } }) {
 
 	const {
 		sales,
@@ -34,7 +34,8 @@ export function Sale({ params }: { params?: { invoice?: number } }) {
 		setSeller,
 		customers,
 		setClient,
-		setDateSale
+		setDateSale,
+		setMenu
 	} = useSaleContext()
 
 	const sale = sales.find((sale) => {
@@ -59,6 +60,8 @@ export function Sale({ params }: { params?: { invoice?: number } }) {
 			// @ts-ignore
 			setDateSale(new Date().toLocaleDateString('pt-br', DateFormat).replace(",", ""))
 		}
+		// @ts-ignore
+		setMenu(params.menu)
 	}, [sales, customers, sale, sellers, setCart, setClient, setDateSale, setTotal, setSeller]);
 
 	return (

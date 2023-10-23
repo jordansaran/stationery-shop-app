@@ -6,10 +6,12 @@ import CircularProgress from '@mui/material/CircularProgress';
 import {Product} from "@/interfaces/interfaces";
 import {Grid} from "@mui/material";
 import Button from "@mui/material/Button";
-import {useEffect, useState} from "react";
+import {SyntheticEvent, useEffect, useState} from "react";
 import Typography from "@mui/material/Typography";
 import { useSaleContext } from '@/context/SalesContext';
 import useQueryItems from "@/hooks/items/hook";
+import Alert from "@mui/material/Alert";
+import Snackbar from "@mui/material/Snackbar";
 
 
 export default function AutoCompleteItems() {
@@ -18,20 +20,32 @@ export default function AutoCompleteItems() {
 		addItem,
 		products,
 		setProducts,
-		setOpenAlert,
 	} = useSaleContext();
+	const [alertProductZero, setAlertProductZero] = useState<boolean>(false)
+	const [alertProductEquals, setAlertProductEquals] = useState<boolean>(false)
 	const [open, setOpen] = useState(false);
 	const [product, setProduct] = useState<Product | null>(null)
 	const [quantity, setQuantity] = useState<number>(0)
 	const { data, isLoading, isError } = useQueryItems()
-  useEffect(() => {
+
+	useEffect(() => {
 		// @ts-ignore
 	  !isLoading && !isError ? setProducts(data) : null
   }, [data, isError, isLoading, open, setProducts]);
 
+	const handleCloseProductZero = (event: SyntheticEvent | Event, reason?: string) => {
+		if (reason === 'clickaway') return;
+		setAlertProductZero(false);
+	};
+
+	const handleCloseProductEquals = (event: SyntheticEvent | Event, reason?: string) => {
+		if (reason === 'clickaway') return;
+		setAlertProductEquals(false);
+	};
+
   let parserItem = () => {
 	  if (product !== null) {
-		  if (quantity === 0) setOpenAlert(true);
+		  if (quantity === 0) setAlertProductZero(true);
 		  if (quantity > 0) {
 			let totalItem = product.value * quantity;
 		    let itemToCart = {
@@ -43,7 +57,7 @@ export default function AutoCompleteItems() {
 		    }
 		    setQuantity(0)
 		    let hasItem = addItem(itemToCart)
-		    if (!hasItem) setOpenAlert(true);
+		    if (!hasItem) setAlertProductEquals(true);
 		  }
 	  }
 	}
@@ -119,6 +133,16 @@ export default function AutoCompleteItems() {
 						<Button size={"large"} color={"primary"} variant={"contained"} onClick={parserItem} sx={{height: "3.5rem"}}>
 							Adicionar
 						</Button>
+						<Snackbar open={alertProductZero} autoHideDuration={6000} onClose={handleCloseProductZero}>
+		          <Alert onClose={handleCloseProductZero} severity="warning" sx={{ width: '100%' }}>
+		            A quantidade de produto não deve ser igual a 0.
+		          </Alert>
+						</Snackbar>
+						<Snackbar open={alertProductEquals} autoHideDuration={6000} onClose={handleCloseProductEquals}>
+		          <Alert onClose={handleCloseProductEquals} severity="warning" sx={{ width: '100%' }}>
+		            Produto já presente no carrinho, remova para modificar a quantidade
+		          </Alert>
+						</Snackbar>
 					</Grid>
 				</Grid>
 			</Grid>
