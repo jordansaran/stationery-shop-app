@@ -1,6 +1,6 @@
 import {getAllCustomers} from "@/api/customers/get";
-import reactQueryFunction from "../ReactQueryFunction";
+import useQueryFunction from "@/hooks/useQueryFunction";
 
 export default function hook() {
-  return reactQueryFunction(['queryAllCustomers'], getAllCustomers)
+  return useQueryFunction(['queryAllCustomers'], getAllCustomers)
 }
