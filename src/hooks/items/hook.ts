@@ -1,6 +1,7 @@
-import useQueryFunction from "@/hooks/useQueryFunction";
+
 import {getAllItems} from "@/api/items/get";
+import reactQueryFunction from "../ReactQueryFunction";
 
 export default function hook () {
-  return useQueryFunction(['queryAllItems'], getAllItems)
+  return reactQueryFunction(['queryAllItems'], getAllItems)
 }

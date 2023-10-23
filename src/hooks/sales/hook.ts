@@ -1,12 +1,12 @@
 import {getReportSales, getSaleByInvoice} from "@/api/sales/get";
-import useQueryFunction from "@/hooks/useQueryFunction";
+import reactQueryFunction from "../ReactQueryFunction";
 
 function queryAllSales() {
-  return useQueryFunction(["reportSales"], getReportSales)
+  return reactQueryFunction(["reportSales"], getReportSales)
 }
 
 function querySaleById(invoice: number) {
-  return useQueryFunction(["editSale"], () => {
+  return reactQueryFunction(["editSale"], () => {
     return getSaleByInvoice(invoice)
   })
 }

@@ -1,9 +1,9 @@
 import {getListCommissions} from "@/api/commissions/get";
 import dayjs from "dayjs";
-import useQueryFunction from "@/hooks/useQueryFunction";
+import reactQueryFunction from "../ReactQueryFunction";
 
 export default function queryListCommissions(dateStart: dayjs.Dayjs | null = null, dateEnd: dayjs.Dayjs | null = null) {
-  return useQueryFunction(["listAllCommissions"], () => {
+  return reactQueryFunction(["listAllCommissions"], () => {
     return getListCommissions(dateStart, dateEnd)
   })
 }

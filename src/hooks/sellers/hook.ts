@@ -1,6 +1,7 @@
 import {getAllSellers} from "@/api/sellers/get";
-import useQueryFunction from "@/hooks/useQueryFunction";
+import reactQueryFunction from "../ReactQueryFunction";
+
 
 export default function hook() {
-  return useQueryFunction(['queryAllSellers'], getAllSellers)
+  return reactQueryFunction(['queryAllSellers'], getAllSellers)
 }

@@ -59,7 +59,7 @@ export function Sale({ params }: { params?: { invoice?: number } }) {
 			// @ts-ignore
 			setDateSale(new Date().toLocaleDateString('pt-br', DateFormat).replace(",", ""))
 		}
-	}, [sales]);
+	}, [sales, customers, sale, sellers, setCart, setClient, setDateSale, setTotal]);
 
 	return (
 		<>

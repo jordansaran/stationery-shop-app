@@ -27,7 +27,7 @@ export default function AutoCompleteItems() {
   useEffect(() => {
 		// @ts-ignore
 	  !isLoading && !isError ? setProducts(data) : null
-  }, [data, isError, isLoading, open]);
+  }, [data, isError, isLoading, open, setProducts]);
 
   let parserItem = () => {
 	  if (product !== null) {
