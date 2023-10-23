@@ -39,9 +39,9 @@ export interface Sale {
 
 export interface Commission {
 	id: string;
-    name: string;
-    total_sales: number;
-	total_commission: number;
+	name: string;
+	totalSales: number;
+	totalCommission: number;
 }
 
 export interface Seller {

@@ -10,4 +10,5 @@ function querySaleById(invoice: number) {
     return getSaleByInvoice(invoice)
   })
 }
+
 export { queryAllSales, querySaleById }
