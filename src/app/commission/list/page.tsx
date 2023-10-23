@@ -31,7 +31,7 @@ export default function TableData() {
         // @ts-ignore
       !isLoading && !isError ? setListCommissions(data) : null
       setMenu("Comissões")
-    }, [data, isLoading, isError, listCommissions]);
+    }, [data, isLoading, isError, listCommissions, setMenu]);
 
 
   return (

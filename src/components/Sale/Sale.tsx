@@ -45,6 +45,7 @@ export function Sale({ params }: { params?: { invoice?: number, menu?: string } 
 		return undefined
 	} )
 
+
 	useEffect(() => {
 		if (sale !== undefined) {
 			const shoppingCart = parserShoppingCart(sale?.cart)
@@ -62,7 +63,8 @@ export function Sale({ params }: { params?: { invoice?: number, menu?: string } 
 		}
 		// @ts-ignore
 		setMenu(params.menu)
-	}, [sales, customers, sale, sellers, setCart, setClient, setDateSale, setTotal, setSeller]);
+			// @ts-ignore
+	}, [sales, customers, sale, sellers, setCart, setClient, setDateSale, setTotal, setSeller, setMenu, params.menu]);
 
 	return (
 		<>
