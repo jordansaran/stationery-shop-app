@@ -26,7 +26,8 @@ export default function TableData() {
     const { data, isLoading, isError, refetch } = queryListCommissions(dateStart, dateEnd)
 
     useEffect(() => {
-        !isLoading && !isError ? setListCommissions(data) : null
+        // @ts-ignore
+      !isLoading && !isError ? setListCommissions(data) : null
     }, [data, isLoading, isError, listCommissions]);
 
 
