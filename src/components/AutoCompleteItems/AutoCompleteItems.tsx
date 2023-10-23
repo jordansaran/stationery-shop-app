@@ -9,7 +9,7 @@ import Button from "@mui/material/Button";
 import {useEffect, useState} from "react";
 import Typography from "@mui/material/Typography";
 import { useSaleContext } from '@/context/SalesContext';
-import hook from '@/hooks/items/hook';
+import useQueryItems from "@/hooks/items/hook";
 
 
 export default function AutoCompleteItems() {
@@ -23,7 +23,7 @@ export default function AutoCompleteItems() {
 	const [open, setOpen] = useState(false);
 	const [product, setProduct] = useState<Product | null>(null)
 	const [quantity, setQuantity] = useState<number>(0)
-	const { data, isLoading, isError } = hook()
+	const { data, isLoading, isError } = useQueryItems()
   useEffect(() => {
 		// @ts-ignore
 	  !isLoading && !isError ? setProducts(data) : null
